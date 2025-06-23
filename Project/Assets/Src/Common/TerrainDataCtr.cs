@@ -16,7 +16,7 @@ namespace QubeWorld
     {
         public static void SaveData(byte[] data, string name)
         {
-            var path = $"{Application.streamingAssetsPath}/{name}.trr";
+            var path = GetPath(name);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream file = File.Create(path);
             formatter.Serialize(file, data);
@@ -25,7 +25,7 @@ namespace QubeWorld
 
         public static byte[] LoadData(string name)
         {
-            var path = $"{Application.streamingAssetsPath}/{name}.trr";
+            var path = GetPath(name);
             if (File.Exists(path))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -40,7 +40,7 @@ namespace QubeWorld
 
         public static void SaveDataMap(byte[,,] data, string name)
         {
-            var path = $"{Application.streamingAssetsPath}/{name}";
+            var path = GetPath(name);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream file = File.Create(path);
             formatter.Serialize(file, data);
@@ -49,7 +49,7 @@ namespace QubeWorld
 
         public static byte[,,] LoadDataMap(string name)
         {
-            var path = $"{Application.streamingAssetsPath}/{name}";
+            var path = GetPath(name);
             if (File.Exists(path))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -63,7 +63,7 @@ namespace QubeWorld
 
         public static void SaveTerrain(Terrain data, string name)
         {
-            var path = $"{Application.streamingAssetsPath}/{name}";
+            var path = GetPath(name);
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream file = File.Create(path);
             formatter.Serialize(file, data);
@@ -72,7 +72,7 @@ namespace QubeWorld
 
         public static Terrain LoadTerrain(string name)
         {
-            var path = $"{Application.streamingAssetsPath}/{name}";
+            var path = GetPath(name);
             if (File.Exists(path))
             {
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -82,6 +82,11 @@ namespace QubeWorld
                 return saveData;
             }
             return null;
+        }
+
+        private static string GetPath(string name)
+        {
+            return $"{Application.streamingAssetsPath}/Terrian/{name}";
         }
 
     }

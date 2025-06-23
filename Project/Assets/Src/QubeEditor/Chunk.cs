@@ -122,6 +122,19 @@ namespace QubeWorld
             return new Vector3Int(Mathf.RoundToInt(v.x), Mathf.RoundToInt(v.y), Mathf.RoundToInt(v.z));
         }
 
+        public static void Release()
+        {
+            _chunk = null;
+            chunkDic.Clear();
+            while (poolTile.Count > 0)
+            {
+                var item = poolTile.Dequeue();
+                if (item != null)
+                {
+                    GameObject.Destroy(item.gameObject);
+                }
+            }
+        }
     }
 
     [RequireComponent(typeof(MeshRenderer))]
@@ -174,6 +187,7 @@ namespace QubeWorld
 
         public void ReleaseChunk()
         {
+            ChunkHelper.Release();
             if (Changed) TerrainDataCtr.SaveTerrain(_terrain, TileName);
             _terrain = null;
             Changed = false;
@@ -244,7 +258,7 @@ namespace QubeWorld
             chunkMesh.triangles = tris.ToArray();
             chunkMesh.normals = normals.ToArray();
             //chunkMesh.RecalculateBounds();
-            chunkMesh.RecalculateNormals();
+            //chunkMesh.RecalculateNormals();
 
             //meshFilter.mesh = chunkMesh;
             meshCollider.sharedMesh = chunkMesh;

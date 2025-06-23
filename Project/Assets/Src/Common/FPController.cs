@@ -6,14 +6,14 @@ namespace QubeWorld
     // It's dependencies have been removed/modified and it has been taken into the GPUInstancer namespace to avoid conflicts.
     // This class is only used in the demo scenes that showcase the GPU Instancer capabilities.
 
-    [RequireComponent(typeof (CharacterController))]
+    [RequireComponent(typeof(CharacterController))]
     public class FPController : MonoBehaviour
     {
         public static FPController Instance;
         [SerializeField] public float m_WalkSpeed;
         [SerializeField] public float m_RunSpeed;
         [SerializeField] public float m_JumpSpeed;
-        
+
         private bool m_IsWalking;
         private MouseLook m_MouseLook;
         private Camera m_Camera;
@@ -44,7 +44,12 @@ namespace QubeWorld
             m_Camera = Camera.main;
             m_Jumping = false;
             m_MouseLook = new MouseLook();
-			m_MouseLook.Init(transform , m_Camera.transform);
+            m_MouseLook.Init(transform, m_Camera.transform);
+        }
+
+        private void OnDestroy()
+        {
+            Instance = null;
         }
 
         private void Update()
@@ -75,16 +80,16 @@ namespace QubeWorld
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
-            Vector3 desiredMove = transform.forward*m_Input.y + transform.right*m_Input.x;
+            Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
 
             // get a normal for the surface that is being touched to move along it
             RaycastHit hitInfo;
             Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
-                               m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+                               m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-            m_MoveDir.x = desiredMove.x*speed;
-            m_MoveDir.z = desiredMove.z*speed;
+            m_MoveDir.x = desiredMove.x * speed;
+            m_MoveDir.z = desiredMove.z * speed;
 
 
             if (m_CharacterController.isGrounded)
@@ -100,9 +105,9 @@ namespace QubeWorld
             }
             else
             {
-                m_MoveDir += Physics.gravity*m_GravityMultiplier*Time.fixedDeltaTime;
+                m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
             }
-            m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
+            m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
             m_MouseLook.UpdateCursorLock();
         }
@@ -131,7 +136,7 @@ namespace QubeWorld
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation (transform, m_Camera.transform);
+            m_MouseLook.LookRotation(transform, m_Camera.transform);
         }
 
 
@@ -148,7 +153,7 @@ namespace QubeWorld
             {
                 return;
             }
-            body.AddForceAtPosition(m_CharacterController.velocity*0.1f, hit.point, ForceMode.Impulse);
+            body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Impulse);
         }
 
         public void SetCursorLock(bool value)

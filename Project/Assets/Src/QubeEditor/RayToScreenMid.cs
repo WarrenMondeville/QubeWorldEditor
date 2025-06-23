@@ -1,6 +1,5 @@
 
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 namespace QubeWorld
 {
     public class RayToScreenMid : MonoBehaviour
@@ -34,7 +33,7 @@ namespace QubeWorld
                 HitOBJ.SetActive(true);
                 RayShotR();              // 如果鼠标左键按下，则发射一条射线
             }
-            FPController.Instance.enabled= !HitOBJ.activeSelf;
+            //FPController.Instance.enabled= !HitOBJ.activeSelf;
 
         }
 
